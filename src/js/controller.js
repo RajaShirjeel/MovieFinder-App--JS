@@ -1,32 +1,6 @@
-import { getNewMovies, state } from "./model";
+import { getMovie, getNewMovies, getSearchMovies, state } from "./model";
+import { debounce } from "./helper";
 import homeTemplate from "./templates/homeTemplate";
-
-const leftArrowGenre = document.querySelector('.left-genre');
-const rightArrowGenre = document.querySelector('.right-genre');
-const containerGenre = document.querySelector('.genre--container-wrapper');
-const leftArrowMovie = document.querySelector('.left-movie');
-const rightArrowMovie = document.querySelector('.right-movie');
-const containerMovie = document.querySelector('.movie--container-wrapper');
-
-
-const scrollAmount = 300;
-
-leftArrowGenre.addEventListener('click', () => {
-    containerGenre.scrollBy({left: -scrollAmount, behavior: "smooth"});
-})
-
-rightArrowGenre.addEventListener('click', () => {
-    containerGenre.scrollBy({left: scrollAmount, behavior: "smooth"});
-})
-
-
-leftArrowMovie.addEventListener('click', () => {
-    containerMovie.scrollBy({left: -scrollAmount, behavior: "smooth"});
-})
-
-rightArrowMovie.addEventListener('click', () => {
-    containerMovie.scrollBy({left: scrollAmount, behavior: "smooth"});
-})
 
 const newMoviesController = async function() {
     homeTemplate.renderMoviesLoader();
@@ -34,8 +8,25 @@ const newMoviesController = async function() {
     homeTemplate.renderMovies(state.newMovies)
 } 
 
-const init = function() {
-    newMoviesController()
+const searchMoviesController = debounce((query) => {
+    getSearchMovies(query);
+    homeTemplate.renderSearchMovies(state.searchMovies);
+}, 250);
+
+const renderMovieController = async function() {
+    const movieId = window.location.hash.slice(1);
+
+    if (!movieId) return;
+    getMovie(movieId);
 }
 
-init()
+
+const init = function() {
+    newMoviesController();
+    homeTemplate.addMovieScrollHandler();
+    homeTemplate.addGenreScrollHandler();
+    homeTemplate.addSearchMovieHandler(searchMoviesController);
+    homeTemplate.addRenderMovieHandler(renderMovieController);
+}
+
+// init();

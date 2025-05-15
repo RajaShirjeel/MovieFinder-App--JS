@@ -2,8 +2,9 @@ import { API_KEY } from "./config"
 
 export const state = {
     newMovies: [],
+    genre: [],
+    searchMovies: [],
     movie: {},
-    genre: []
 }
 
 
@@ -16,7 +17,16 @@ export const getNewMovies = async function() {
       posterUrl: ob.poster_url,
     }))
     state.newMovies = releases;
-    console.log(state.newMovies)
 }
 
-getNewMovies()
+export const getSearchMovies = async function(query) {
+    const res = await fetch(`https://api.watchmode.com/v1/autocomplete-search/?apiKey=${API_KEY}&search_value=${query}&search_type=3`);
+    const {results} = await res.json();
+    state.searchMovies = results;
+}
+
+export const getMovie = async function(movieId) {
+    const res = await fetch(`https://api.watchmode.com/v1/title/${movieId}/details/?apiKey=${API_KEY}&append_to_response=cast-crew`);
+    const data = await res.json();
+    console.log(data);
+}

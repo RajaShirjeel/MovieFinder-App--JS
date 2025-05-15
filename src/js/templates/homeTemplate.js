@@ -1,5 +1,62 @@
 class HomeTemplate {
-    __containerMovies = document.querySelector('.movie--container-wrapper');
+    #body = document.querySelector('body');
+    #containerMovies = document.querySelector('.movie--container-wrapper');
+    #containerGenre = document.querySelector('.genre--container-wrapper');
+    #leftArrowGenre = document.querySelector('.left-genre');
+    #rightArrowGenre = document.querySelector('.right-genre');
+    #leftArrowMovie = document.querySelector('.left-movie');
+    #rightArrowMovie = document.querySelector('.right-movie');
+    #searchbar = document.querySelector('.searchbar'); 
+    #searchItemOverlay = document.querySelector('.searchbar--search-items--overlay');
+    #searchMoviesContainer = document.querySelector('.search-items--container');
+    #scrollAmount = 300;
+
+
+    addRenderMovieHandler(handler) {
+        window.addEventListener('hashchange', handler);
+    }
+
+    addGenreScrollHandler() {
+        this.#leftArrowGenre.addEventListener('click', () => {
+            this.#containerGenre.scrollBy({left: -this.#scrollAmount, behavior: "smooth"});
+        })
+
+        this.#rightArrowGenre.addEventListener('click', () => {
+            this.#containerGenre.scrollBy({left: this.#scrollAmount, behavior: "smooth"});
+        })
+    }
+
+    addSearchMovieHandler(handler) {
+        this.#searchbar.addEventListener('input', () =>{
+            this.#searchItemOverlay.style.display = 'block';
+            handler(this.#searchbar.value);
+        })
+
+        this.#body.addEventListener('click', () => {
+            this.#searchItemOverlay.style.display = 'none';
+        })
+    }
+
+    renderSearchMovies(data) {
+        const markup = data.map(ob => {
+            return `
+                <a href="#${ob.id}" class="search-item">${ob.name}</a>
+            `
+        }).join('\n');
+        this.#searchMoviesContainer.innerHTML = '';
+        this.#searchMoviesContainer.insertAdjacentHTML('afterbegin', markup);
+    }
+
+    addMovieScrollHandler() {
+        this.#leftArrowMovie.addEventListener('click', () => {
+            this.#containerMovies.scrollBy({left: -this.#scrollAmount, behavior: "smooth"});
+        })
+
+        this.#rightArrowMovie.addEventListener('click', () => {
+            this.#containerMovies.scrollBy({left: this.#scrollAmount, behavior: "smooth"});
+        })
+
+    }
 
     renderMoviesLoader() {
         const markup = `
@@ -7,7 +64,7 @@ class HomeTemplate {
                 <div class="loader"></div>
             </div>
         `
-        this.__containerMovies.insertAdjacentHTML('afterbegin', markup);
+        this.#containerMovies.insertAdjacentHTML('afterbegin', markup);
     }
 
     renderMovies(data) {
@@ -21,8 +78,8 @@ class HomeTemplate {
             `
         }).join('\n')
 
-        this.__containerMovies.innerHTML = '';
-        this.__containerMovies.insertAdjacentHTML('afterbegin', markup);
+        this.#containerMovies.innerHTML = '';
+        this.#containerMovies.insertAdjacentHTML('afterbegin', markup);
     }
 }
 
