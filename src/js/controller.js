@@ -1,11 +1,14 @@
-import { getMovie, getNewMovies, getSearchMovies, state } from "./model";
+import { getGenre, getMovie, getNewMovies, getSearchMovies, state } from "./model";
 import { debounce } from "./helper";
 import homeTemplate from "./templates/homeTemplate";
+import movieTemplate from "./templates/movieTemplate";
 
-const newMoviesController = async function() {
+const renderHomepageController = async function() {
     homeTemplate.renderMoviesLoader();
     await getNewMovies();
     homeTemplate.renderMovies(state.newMovies)
+    await getGenre();
+    homeTemplate.renderGenre(state.genre);
 } 
 
 const searchMoviesController = debounce((query) => {
@@ -17,16 +20,17 @@ const renderMovieController = async function() {
     const movieId = window.location.hash.slice(1);
 
     if (!movieId) return;
-    getMovie(movieId);
+    await getMovie(movieId);
+    movieTemplate.render(state.movie);
+    movieTemplate.addRatingHandler(state.movie.rating);
 }
 
-
 const init = function() {
-    newMoviesController();
+    renderHomepageController();
     homeTemplate.addMovieScrollHandler();
     homeTemplate.addGenreScrollHandler();
     homeTemplate.addSearchMovieHandler(searchMoviesController);
     homeTemplate.addRenderMovieHandler(renderMovieController);
 }
 
-// init();
+init();

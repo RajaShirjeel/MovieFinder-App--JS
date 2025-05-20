@@ -7,7 +7,6 @@ export const state = {
     movie: {},
 }
 
-
 export const getNewMovies = async function() {
     const res = await fetch(`https://api.watchmode.com/v1/releases/?apiKey=${API_KEY}`);
     let {releases} = await res.json();
@@ -19,6 +18,12 @@ export const getNewMovies = async function() {
     state.newMovies = releases;
 }
 
+export const getGenre = async function() {
+    const res = await fetch(`https://api.watchmode.com/v1/genres/?apiKey=${API_KEY}`);
+    const data = await res.json();
+    state.genre = data;
+}
+
 export const getSearchMovies = async function(query) {
     const res = await fetch(`https://api.watchmode.com/v1/autocomplete-search/?apiKey=${API_KEY}&search_value=${query}&search_type=3`);
     const {results} = await res.json();
@@ -28,5 +33,16 @@ export const getSearchMovies = async function(query) {
 export const getMovie = async function(movieId) {
     const res = await fetch(`https://api.watchmode.com/v1/title/${movieId}/details/?apiKey=${API_KEY}&append_to_response=cast-crew`);
     const data = await res.json();
-    console.log(data);
+    const movie = {
+        title: data.title,
+        cast: data.cast.length > 0 ? data.cast : null,
+        rating: data.user_rating,
+        plot: data.plot_overview,
+        genre: data.genre_names[0],
+        year: data.release_date.split('-')[0],
+        trailer: data.trailer,
+        poster: data.poster
+    }
+
+    state.movie = movie;
 }

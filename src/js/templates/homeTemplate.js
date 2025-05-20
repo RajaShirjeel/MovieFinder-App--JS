@@ -14,6 +14,7 @@ class HomeTemplate {
 
     addRenderMovieHandler(handler) {
         window.addEventListener('hashchange', handler);
+        window.addEventListener('load', handler);
     }
 
     addGenreScrollHandler() {
@@ -37,16 +38,6 @@ class HomeTemplate {
         })
     }
 
-    renderSearchMovies(data) {
-        const markup = data.map(ob => {
-            return `
-                <a href="#${ob.id}" class="search-item">${ob.name}</a>
-            `
-        }).join('\n');
-        this.#searchMoviesContainer.innerHTML = '';
-        this.#searchMoviesContainer.insertAdjacentHTML('afterbegin', markup);
-    }
-
     addMovieScrollHandler() {
         this.#leftArrowMovie.addEventListener('click', () => {
             this.#containerMovies.scrollBy({left: -this.#scrollAmount, behavior: "smooth"});
@@ -56,6 +47,31 @@ class HomeTemplate {
             this.#containerMovies.scrollBy({left: this.#scrollAmount, behavior: "smooth"});
         })
 
+    }
+
+    renderGenre(data) {
+        const markup = data.map(obj => {
+            return `
+                <div class="genre" data-id="${obj.id}">
+                        <div class="genre-icon--container">
+                            <ion-icon name="videocam-outline" class="genre-icon"></ion-icon>
+                        </div>
+                        <p class="genre-txt">${obj.name}</p>
+                </div>
+            `
+        }).join('\n');
+
+        this.#containerGenre.insertAdjacentHTML('afterbegin', markup);
+    }
+
+    renderSearchMovies(data) {
+        const markup = data.map(ob => {
+            return `
+                <a href="#${ob.id}" class="search-item">${ob.name}</a>
+            `
+        }).join('\n');
+        this.#searchMoviesContainer.innerHTML = '';
+        this.#searchMoviesContainer.insertAdjacentHTML('afterbegin', markup);
     }
 
     renderMoviesLoader() {
