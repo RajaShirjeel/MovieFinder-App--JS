@@ -403,3 +403,29 @@ ion-icon {
     justify-content: center;
     margin-top: 3rem;
 }
+
+.all--movies--container {
+    margin-left: 9rem;
+    margin-top: 2rem;
+}
+
+.heading-all-movies {
+    text-align: center;
+    font-size: 3rem;
+}
+
+.movie--results {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-left: 1rem;
+    margin-top: 4rem;
+}
+
+.movie-result {
+    font-size: 2rem;
+}
+
+.movie--results li {
+    font-size: 2rem;
+}

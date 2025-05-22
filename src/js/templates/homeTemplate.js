@@ -17,6 +17,15 @@ class HomeTemplate {
         window.addEventListener('load', handler);
     }
 
+    addGenreHandler(handler) {
+        this.#containerGenre.addEventListener('click', (e) => {
+            const target = e.target.closest('.genre');
+            if (!target) return;
+            const id = target.dataset.id;
+            handler(id);
+        })
+    }
+
     addGenreScrollHandler() {
         this.#leftArrowGenre.addEventListener('click', () => {
             this.#containerGenre.scrollBy({left: -this.#scrollAmount, behavior: "smooth"});
