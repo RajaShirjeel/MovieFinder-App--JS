@@ -1,3 +1,5 @@
+import { MAX_RATING, STARS_MAX } from "../config";
+
 class MovieTemplate {
     #container = document.querySelector('.container');
     
@@ -8,14 +10,25 @@ class MovieTemplate {
 
     addRatingHandler(ratingM) {
         const rating = ratingM;
-        const maxRating = 10;
-        const starsMax = 5;
+        const maxRating = MAX_RATING;
+        const starsMax = STARS_MAX;
         
         const ratingOutOfFive = (rating / maxRating) * starsMax;
         const rounded = Math.round(ratingOutOfFive * 2) / 2;
         const widthPercent = (rounded / starsMax) * 100;
         
         document.querySelector(".stars-inner").style.width = `${widthPercent}%`;
+    }
+
+    renderLoader() {
+        const markup = `
+                <div class="loader--container--genre">
+                    <div class="loader"></div>
+                </div>
+            `
+        this.#container.innerHTML = '';
+        this.#container.insertAdjacentHTML('afterbegin', markup);
+    
     }
 
     render(data) {

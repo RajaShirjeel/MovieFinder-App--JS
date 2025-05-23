@@ -92,6 +92,15 @@ class HomeTemplate {
         this.#containerMovies.insertAdjacentHTML('afterbegin', markup);
     }
 
+    renderGenreLoader() {
+        const markup = `
+            <div class="loader--container--movie">
+                <div class="loader"></div>
+            </div>
+        `
+        this.#containerGenre.insertAdjacentHTML('afterbegin', markup);
+    }
+
     renderMovies(data) {
         const markup = data.map(ob => {
             return `

@@ -1,4 +1,4 @@
-import { API_KEY } from "./config"
+import { API_KEY, RESULTS_PER_PAGE } from "./config"
 
 export const state = {
     newMovies: [],
@@ -6,7 +6,8 @@ export const state = {
     genre: [],
     searchMovies: [],
     movie: {},
-    currPage: 1,
+    page: 1,
+    resultsPerPage: RESULTS_PER_PAGE,
 }
 
 export const getNewMovies = async function() {
@@ -26,11 +27,17 @@ export const getGenre = async function() {
     state.genre = data;
 }
 
-export const getGenreMovies = async function(id) {
+export const loadGenreMovies = async function(id) {
     const res = await fetch(`https://api.watchmode.com/v1/list-titles/?apiKey=${API_KEY}&genres=${id}`);
     const data = await res.json();
     state.genreMovies = data.titles;
-    console.log(state.genreMovies)
+}
+
+export const getGenreMovies = function(page = state.page) {
+    state.page = page;
+    const start = (page - 1) * state.resultsPerPage;
+    const end = page * state.resultsPerPage;
+    return state.genreMovies.slice(start, end);
 }
 
 export const getSearchMovies = async function(query) {

@@ -1,11 +1,19 @@
 class ResultTemplate {
     #container = document.querySelector('.container');
     
+    renderLoader() {
+        const markup = `
+                <div class="loader--container--genre">
+                    <div class="loader"></div>
+                </div>
+            `
+        this.#container.innerHTML = '';
+        this.#container.insertAdjacentHTML('afterbegin', markup);
+    }
 
     render(data) {
         const markup = `
         <div class="all--movies--container">
-            <h2 class="heading-all-movies">${data.length} results</h2>
             <ol class="movie--results">
                 ${data.map(obj => {
                     return `
