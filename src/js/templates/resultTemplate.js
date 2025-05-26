@@ -1,5 +1,15 @@
 class ResultTemplate {
     #container = document.querySelector('.container');
+
+    renderError(message) {
+        const markup = `
+            <div class="error-message--container">
+                <div class="error--message">${message}</div>
+            </div>
+        `
+        this.#container.innerHTML = '';
+        this.#container.insertAdjacentHTML('afterbegin', markup);
+    }
     
     renderLoader() {
         const markup = `

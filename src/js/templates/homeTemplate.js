@@ -58,6 +58,27 @@ class HomeTemplate {
 
     }
 
+    renderErrorMovie(message) {
+        const markup = `
+            <div class="error-message--container">
+                <div class="error--message">${message}</div>
+            </div>
+        `
+        this.#containerMovies.innerHTML = '';
+        this.#containerMovies.insertAdjacentHTML('afterbegin', markup);
+    }
+
+
+    renderErrorGenre(message) {
+        const markup = `
+            <div class="error-message--container">
+                <div class="error--message">${message}</div>
+            </div>
+        `
+        this.#containerGenre.innerHTML = '';
+        this.#containerGenre.insertAdjacentHTML('afterbegin', markup);
+    }
+
     renderGenre(data) {
         const markup = data.map(obj => {
             return `

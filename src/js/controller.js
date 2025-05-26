@@ -7,23 +7,37 @@ import paginationTemplate from "./templates/paginationTemplate";
 import { DEBOUNCE_DELAY } from "./config";
 
 const renderHomepageController = async function() {
-    homeTemplate.renderMoviesLoader();
-    homeTemplate.renderGenreLoader();
-    await getNewMovies();
-    homeTemplate.renderMovies(state.newMovies)
-    await getGenre();
-    homeTemplate.renderGenre(state.genre);
-    homeTemplate.addGenreHandler(renderGenreMovies);
+    try {
+        homeTemplate.renderMoviesLoader();
+        homeTemplate.renderGenreLoader();
+        await getNewMovies();
+        homeTemplate.renderMovies(state.newMovies)
+        await getGenre();
+        homeTemplate.renderGenre(state.genre);
+        homeTemplate.addGenreHandler(renderGenreMovies);
+    }
+
+    catch (err) {
+        homeTemplate.renderErrorMovie(err.message);
+        homeTemplate.renderErrorGenre(err.message);
+    }
+
 }
 
 const renderMovieController = async function() {
-    const movieId = window.location.hash.slice(1);
+    try {
+        const movieId = window.location.hash.slice(1);
 
-    if (!movieId) return;
-    movieTemplate.renderLoader();
-    await getMovie(movieId);
-    movieTemplate.render(state.movie);
-    movieTemplate.addRatingHandler(state.movie.rating);
+        if (!movieId) return;
+        movieTemplate.renderLoader();
+        await getMovie(movieId);
+        movieTemplate.render(state.movie);
+        movieTemplate.addRatingHandler(state.movie.rating);
+    }
+
+    catch (err) {
+        movieTemplate.renderError(err.message);
+    }
 }
 
 const renderPaginationController = function(goToPage) {
@@ -33,16 +47,29 @@ const renderPaginationController = function(goToPage) {
 }
 
 const renderGenreMovies = async function(genreId) {
-    resultTemplate.renderLoader();
-    await loadGenreMovies(genreId);
-    resultTemplate.render(getGenreMovies(1));
-    paginationTemplate.render(state);
-    paginationTemplate.addPaginationHandler(renderPaginationController);
+    try {
+        resultTemplate.renderLoader();
+        await loadGenreMovies(genreId);
+        resultTemplate.render(getGenreMovies(1));
+        paginationTemplate.render(state);
+        paginationTemplate.addPaginationHandler(renderPaginationController);
+    }
+
+    catch (err) {
+        resultTemplate.renderError(err.message);
+    }
 }
 
 const searchMoviesController = debounce(async (query) => {
-    await getSearchMovies(query);
-    homeTemplate.renderSearchMovies(state.searchMovies);
+    try {
+        await getSearchMovies(query);
+        homeTemplate.renderSearchMovies(state.searchMovies);
+    }
+
+    catch (err) {
+        console.log(err)
+    }
+
 }, DEBOUNCE_DELAY);
 
 const init = function() {

@@ -251,6 +251,17 @@ body {
   }
 }
 
+.error-message--container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.error--message {
+    font-size: 2.7rem;
+}
+
 .movie--poster--container {
     position: relative;
     background-size: cover;

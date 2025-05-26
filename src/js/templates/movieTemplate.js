@@ -20,6 +20,16 @@ class MovieTemplate {
         document.querySelector(".stars-inner").style.width = `${widthPercent}%`;
     }
 
+    renderError(message) {
+        const markup = `
+            <div class="error-message--container">
+                <div class="error--message">${message}</div>
+            </div>
+        `
+        this.#container.innerHTML = '';
+        this.#container.insertAdjacentHTML('afterbegin', markup);
+    }
+
     renderLoader() {
         const markup = `
                 <div class="loader--container--genre">
